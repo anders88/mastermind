@@ -21,3 +21,8 @@
   (is (= {:place 2 :color 2} (guess-feedback [:red :green :blue :blue] [:green :red :blue :blue])))
   )
 
+(deftest test-possible-solution
+  (is (possible-solution? [:red :red :red :red] []))
+  (is (not (possible-solution? [:red :green :green :green] [{:guess [:red :red :red :red] :feedback {:place 0 :color 0} }])))
+  (is (possible-solution? [:red :green :green :green] [{:guess [:blue :red :blue :blue] :feedback {:place 0 :color 1} }]))
+  )
