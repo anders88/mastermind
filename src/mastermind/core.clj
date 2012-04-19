@@ -37,3 +37,15 @@
   (filter #(possible-solution? % feedbacks) all-possible)
   )
 
+(defn find-solution [fact feedbacks]
+  (if (= fact (:guess (last feedbacks))) feedbacks
+    (let [next-try (first (all-possible-solutions feedbacks))]
+      (if (nil? next-try) feedbacks
+        (find-solution fact (conj feedbacks {:guess next-try :feedback (guess-feedback fact next-try)}))
+        )
+      )
+    )
+  )
+
+(println (str "Fact  [:red :green :orange :blue] \n" (reduce (fn [a b] (str a "\n" b)) (find-solution [:red :green :orange :blue] []))))
+  
