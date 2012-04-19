@@ -26,3 +26,8 @@
   (is (not (possible-solution? [:red :green :green :green] [{:guess [:red :red :red :red] :feedback {:place 0 :color 0} }])))
   (is (possible-solution? [:red :green :green :green] [{:guess [:blue :red :blue :blue] :feedback {:place 0 :color 1} }]))
   )
+
+(deftest test-all-possible
+  (is (= (* 6 6 6 6) (count all-possible)))
+  (is (contains? (set all-possible) [:red :blue :green :green]))
+  )

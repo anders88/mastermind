@@ -1,6 +1,10 @@
-(ns mastermind.core)
+(ns mastermind.core
+  (:use [clojure.contrib.combinatorics :only (selections)])
+  )
 
 (def colors [:red :green :blue :yellow :orange :purple])
+
+(def all-possible (selections colors 4))
 
 (defn correct-place [fact guess]
   (if (empty? fact) 0
@@ -28,3 +32,8 @@
     (and (= (guess-feedback (:guess (first feedbacks)) guess) (:feedback (first feedbacks))) (possible-solution? guess (rest feedbacks))) 
   )
   )
+
+(defn all-possible-solutions [feedbacks]
+  (filter #(possible-solution? % feedbacks) all-possible)
+  )
+
