@@ -18,5 +18,11 @@
   (reduce + (vals (merge-with min (union-keys map-fact map-guess) (union-keys map-guess map-fact))))
   )
   )
+
+(defn guess-feedback [fact guess]
+  (let [cp (correct-place fact guess) cc (correct-color fact guess)]
+    {:place cp :color (- cc cp)}
+    )
+  )
   
 

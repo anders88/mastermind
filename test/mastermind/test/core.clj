@@ -11,5 +11,13 @@
 (deftest test-correct-color 
   (is (= 4 (correct-color [:red :red :red :red] [:red :red :red :red])))
   (is (= 0 (correct-color [:red :red :red :red] [:blue :blue :blue :blue])))
-  (is (= 2 (correct-color [:red :green :blue :blue] [:green :blue :yellow :yellow])))
+  (is (= 2 (correct-color [:red :green :blue :blue] [:green :red :yellow :yellow])))
   )
+
+(deftest test-guess-feedback 
+  (is (= {:place 4 :color 0} (guess-feedback [:red :red :red :red] [:red :red :red :red])))
+  (is (= {:place 0 :color 0} (guess-feedback [:red :red :red :red] [:blue :blue :blue :blue])))
+  (is (= {:place 0 :color 2} (guess-feedback [:red :green :blue :blue] [:green :red :yellow :yellow])))
+  (is (= {:place 2 :color 2} (guess-feedback [:red :green :blue :blue] [:green :red :blue :blue])))
+  )
+
