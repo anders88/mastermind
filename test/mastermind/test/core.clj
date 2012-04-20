@@ -22,9 +22,13 @@
   )
 
 (deftest test-possible-solution
-  (is (possible-solution? [:red :red :red :red] []))
-  (is (not (possible-solution? [:red :green :green :green] [{:guess [:red :red :red :red] :feedback {:place 0 :color 0} }])))
-  (is (possible-solution? [:red :green :green :green] [{:guess [:blue :red :blue :blue] :feedback {:place 0 :color 1} }]))
+  (is (possible-solution? [] [:red :red :red :red]))
+  (is (not (possible-solution? [{:guess [:red :red :red :red]
+                                 :feedback {:place 0 :color 0} }]
+                               [:red :green :green :green])))
+  (is (possible-solution? [{:guess [:blue :red :blue :blue]
+                            :feedback {:place 0 :color 1} }]
+                          [:red :green :green :green]))
   )
 
 (deftest test-all-possible

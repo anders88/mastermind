@@ -1,51 +1,48 @@
 (ns mastermind.core
-  (:use [clojure.contrib.combinatorics :only (selections)])
-  )
+  (:use [clojure.contrib.combinatorics :only (selections)]
+        ;[clojure.data :only [diff]]
+        [clojure.set :only [intersection]]))
 
 (def colors [:red :green :blue :yellow :orange :purple])
 
 (def all-possible (selections colors 4))
 
-(defn correct-place [fact guess]
-  (if (empty? fact) 0
-    (+ (if (= (first fact) (first guess)) 1 0) (correct-place (rest fact) (rest guess)))
-  )
+(defn correct-place
+  "Counts the number of position matches."
+  [fact guess]
+  (count (filter (partial apply =) (partition 2 (interleave fact guess))))
+  ;(count (remove nil? ((diff fact guess) 2)))
   )
 
-(defn correct-color [fact guess]
-  (let [map-fact (frequencies fact) 
-        map-guess (frequencies guess)
-        union-keys (fn [master slave] (apply dissoc master (keys (apply dissoc master (keys slave)))))
-        ]
-  (reduce + (vals (merge-with min (union-keys map-fact map-guess) (union-keys map-guess map-fact))))
-  )
-  )
+(defn correct-color
+  "Counts the number of colour matches."
+  [fact guess]
+  (let [fact (frequencies fact)
+        guess (frequencies guess)
+        common-keys (intersection (set (keys fact)) (set (keys guess)))
+        merged (merge-with min fact guess)
+        common (select-keys merged common-keys)]
+    (reduce + (vals common))))
 
 (defn guess-feedback [fact guess]
   (let [cp (correct-place fact guess) cc (correct-color fact guess)]
-    {:place cp :color (- cc cp)}
-    )
-  )
+    {:place cp :color (- cc cp)}))
   
-(defn possible-solution? [guess feedbacks]
-  (if (empty? feedbacks) true
-    (and (= (guess-feedback (:guess (first feedbacks)) guess) (:feedback (first feedbacks))) (possible-solution? guess (rest feedbacks))) 
-  )
-  )
+(defn possible-solution? [feedbacks guess]
+  (every? #(= (guess-feedback (:guess %) guess) (:feedback %)) feedbacks))
 
 (defn all-possible-solutions [feedbacks]
-  (filter #(possible-solution? % feedbacks) all-possible)
-  )
+  (filter (partial possible-solution? feedbacks) all-possible))
 
 (defn find-solution [fact feedbacks]
   (if (= fact (:guess (last feedbacks))) feedbacks
-    (let [next-try (first (all-possible-solutions feedbacks))]
-      (if (nil? next-try) feedbacks
-        (find-solution fact (conj feedbacks {:guess next-try :feedback (guess-feedback fact next-try)}))
-        )
-      )
-    )
-  )
+      (let [next-try (first (all-possible-solutions feedbacks))]
+        (if (nil? next-try) feedbacks
+            (recur fact (conj feedbacks
+                              {:guess next-try
+                               :feedback (guess-feedback fact next-try)}))))))
 
-(println (str "Fact  [:red :green :orange :blue] \n" (reduce (fn [a b] (str a "\n" b)) (find-solution [:red :green :orange :blue] []))))
+(println (str "Fact  [:red :green :orange :blue] \n"
+              (reduce (fn [a b] (str a "\n" b))
+                      (find-solution [:red :green :orange :blue] []))))
   
