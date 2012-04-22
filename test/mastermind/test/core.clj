@@ -35,3 +35,7 @@
   (is (= (* 6 6 6 6) (count all-possible)))
   (is (contains? (set all-possible) [:red :blue :green :green]))
   )
+
+(println (str "Fact  [:red :green :orange :blue] \n"
+              (reduce (fn [a b] (str a "\n" b))
+                      (find-solution [:red :green :orange :blue] []))))

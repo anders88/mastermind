@@ -2,4 +2,7 @@
   :description "A Mastermind implementation"
   :dependencies [
                  [org.clojure/clojure "1.3.0"]
-                 [org.clojars.nathell/clojure-contrib "1.2.0"]])
+                 [org.clojars.nathell/clojure-contrib "1.2.0"]
+                 [noir "1.3.0-alpha10"]]
+ :main ^{:skip-aot true} mastermind.server
+)
