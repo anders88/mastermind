@@ -4,13 +4,22 @@
         [hiccup.page-helpers :only [html5 include-css]]
         [hiccup.form-helpers]
 	[mastermind.core :only [find-solution]])
-)
+  )
+
+(defn col-selector [with-id]
+  [:select {:name with-id}
+   (select-options [["red" "r"] ["green" "g"] ["blue" "b"] ["yellow" "y"] ["orange" "o"] ["purple" "p"]])]
+  )
+                    
 
 (defpage "/" []
 	(html5 
           (form-to [:get "findSolution"]
-               (text-field "fact")
-               (submit-button "Search")
+                   (col-selector "p1")
+                   (col-selector "p2")
+                   (col-selector "p3")
+                   (col-selector "p4")
+               (submit-button "Find solution")
                )
           
           )
@@ -23,24 +32,17 @@
     )
   )
 
-(defn convert-string-to-color-code [s]
-  (map codestr-to-color (map #(str %) s))
-  )
-
-(defn guess-as-string [guess]
-  (str (reduce (fn [a b] (str a "+" b)) (:guess guess)) " -> Correct place: " (:place (:feedback guess)) " Correct color: "  (:place (:feedback guess)))
-  )
-  
-                
-(defpage [:get "/findSolution"] {:as parameters} 
+(defpage [:get "/findSolution"] {:as parameters}
+  (let [fact (map codestr-to-color [(:p1 parameters) (:p2 parameters) (:p3 parameters) (:p4 parameters)])]
   (html5
    [:body
-    [:h1 (str "The code was " (:fact parameters))]
+    [:h1 (str "The code was: " (reduce (fn [a b] (str a "-" b)) fact))]
     [:ul
-     (for [part (find-solution (convert-string-to-color-code (:fact parameters)) [])]
+     (for [part (find-solution fact [])]
        [:li (guess-as-string part)]
        )
      ]
    ]
    )
+  )
   )
