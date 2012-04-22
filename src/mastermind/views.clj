@@ -31,6 +31,9 @@
     (last (find colmap colorstr))
     )
   )
+(defn guess-as-string [guess]
+  (str (reduce (fn [a b] (str a "+" b)) (:guess guess)) " -> Correct place: " (:place (:feedback guess)) " Correct color: "  (:place (:feedback guess)))
+  )
 
 (defpage [:get "/findSolution"] {:as parameters}
   (let [fact (map codestr-to-color [(:p1 parameters) (:p2 parameters) (:p3 parameters) (:p4 parameters)])]
@@ -42,6 +45,7 @@
        [:li (guess-as-string part)]
        )
      ]
+    [:a {:href "/"} "Try again"]
    ]
    )
   )
