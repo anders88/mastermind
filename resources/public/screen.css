@@ -1,0 +1,83 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
+
+body {
+  font-family: "Droid Sans";
+  background-color: #ddd;
+  color: #222;
+  text-align: center;
+  width: 100%;
+  margin: 2em 0;
+}
+
+div.color, div.correct, div.guess {
+  display: inline;
+  margin: 0.5em 1em;
+}
+
+div.guess {
+  display: block;
+}
+
+div.color {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-color: black;
+  border-radius: 16px;
+  margin: 0.25em 0.5em;
+  box-shadow: 3px 3px 6px black;
+}
+
+div.red {
+  background-color: #cd261d;
+}
+
+div.blue {
+  background-color: #049cdb;
+}
+
+div.green {
+  background-color: #46a546;
+}
+
+div.yellow {
+  background-color: #ffc40d;
+}
+
+div.orange {
+  background-color: #f89406;
+}
+
+div.purple {
+  background-color: #7a43b6;
+}
+
+h1 {
+  border-bottom: 2px groove white;
+}
+
+h1 div.color {
+  margin: 0 6pt -4pt 6pt;
+}
+
+input, select {
+  font-family: "Droid Sans";
+  font-size: 18pt;
+}
+
+p.again {
+  border-top: 2px groove white;
+  margin: 2em 0;
+  padding-top: 1em;
+  font-size: 18pt;
+  font-weight: bold;
+  color: #7a43b6;
+}
+
+p.again a {
+  color: #7a43b6;
+}
+
+p.again:before {
+  content: "⇐ ";
+}
